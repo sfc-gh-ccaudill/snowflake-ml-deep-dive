@@ -1,0 +1,86 @@
+snowflake:
+  connection_name: DEMO
+  database: ML_DEMO_PIPELINE_DB
+  schema: HEALTHCARE
+  warehouse: ML_DEMO_WAREHOUSE
+
+compute:
+  compute_pool: ML_DEMO_COMPUTE_POOL
+  instance_family: CPU_X64_S
+  min_nodes: 1
+  max_nodes: 6
+
+stages:
+  job_payloads: JOB_PAYLOADS
+
+tables:
+  raw_data: RAW_PATIENT_DATA
+  test_features: TEST_FEATURES
+
+model:
+  model_name: PATIENT_RISK_MODEL
+  target_platforms:
+    - SNOWPARK_CONTAINER_SERVICES
+    - WAREHOUSE
+
+deploy:
+  service_name: PATIENT_RISK_SERVICE
+  min_instances: 1
+  max_instances: 1
+  auto_suspend_secs: 3600
+
+evaluation:
+  accuracy_threshold: 0.80
+  f1_macro_threshold: 0.75
+
+monitor:
+  monitor_name: PATIENT_RISK_MONITOR
+  inference_logs_view: INFERENCE_LOGS_VIEW
+  baseline_table: MONITOR_BASELINE
+  drift_alert_enabled: true
+  retrain_root_task: PIPELINE_FEATURE_ENG_TASK
+  drift_alerts:
+    - alert_name: PREDICTION_DRIFT_ALERT
+      column: RISK_LEVEL
+      drift_metric: POPULATION_STABILITY_INDEX
+      drift_threshold: 0.25
+      schedule: "USING CRON 0 6 * * * America/Los_Angeles"
+    - alert_name: VITAL_SIGNS_SEVERITY_DRIFT_ALERT
+      column: VITAL_SIGNS_SEVERITY
+      drift_metric: POPULATION_STABILITY_INDEX
+      drift_threshold: 0.20
+      schedule: "USING CRON 0 6 * * * America/Los_Angeles"
+
+features:
+  raw_numeric_features:
+    - AGE
+    - BMI
+    - HEART_RATE
+    - SYSTOLIC_BP
+    - DIASTOLIC_BP
+    - TEMPERATURE
+    - RESPIRATORY_RATE
+    - OXYGEN_SATURATION
+    - GLUCOSE_LEVEL
+    - CREATININE
+    - HEMOGLOBIN
+    - WBC_COUNT
+    - COMORBIDITY_COUNT
+    - PREVIOUS_ADMISSIONS
+    - MEDICATION_COUNT
+  categorical_features:
+    - GENDER
+    - PRIMARY_DIAGNOSIS
+    - ADMISSION_TYPE
+    - INSURANCE_TYPE
+  computed_features:
+    - SHOCK_INDEX
+    - PULSE_PRESSURE
+    - BMI_CATEGORY
+    - VITAL_SIGNS_SEVERITY
+  target_column: RISK_LEVEL
+  class_labels:
+    - LOW
+    - MEDIUM
+    - HIGH
+    - CRITICAL
