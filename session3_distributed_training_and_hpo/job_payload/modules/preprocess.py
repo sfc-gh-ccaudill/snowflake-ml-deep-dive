@@ -8,7 +8,7 @@ so that individual training scripts can focus on their primary purpose.
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder, StandardScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 NUMERIC_COLS = [
     "AGE",
@@ -36,7 +36,7 @@ FEATURE_COLS = NUMERIC_COLS + CATEGORICAL_COLS
 
 
 class Preprocessor:
-    """Builds and applies a sklearn ColumnTransformer + LabelEncoder."""
+    """Builds and applies a sklearn ColumnTransformer."""
 
     def __init__(self, numeric_cols=None, categorical_cols=None, target_col=None):
         self.numeric_cols = numeric_cols or NUMERIC_COLS
@@ -44,7 +44,6 @@ class Preprocessor:
         self.target_col = target_col or TARGET_COL
         self.feature_cols = self.numeric_cols + self.categorical_cols
         self.column_transformer = None
-        self.label_encoder = None
 
     def build_column_transformer(self):
         numeric_pipe = Pipeline(
@@ -79,11 +78,8 @@ class Preprocessor:
             else None
         )
 
-        self.label_encoder = LabelEncoder()
-        y_train = self.label_encoder.fit_transform(train_df[self.target_col])
-        y_test = (
-            self.label_encoder.transform(test_df[self.target_col]) if test_df is not None else None
-        )
+        y_train = train_df[self.target_col].values
+        y_test = test_df[self.target_col].values if test_df is not None else None
 
         return X_train, y_train, X_test, y_test
 

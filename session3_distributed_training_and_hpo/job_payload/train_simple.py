@@ -25,7 +25,7 @@ def main():
     # == Gather Config Params ==
     database = os.environ.get("DATABASE", "ML_DEMO_PIPELINE_DB")
     schema = os.environ.get("SCHEMA", "HEALTHCARE")
-    model_name = os.environ.get("MODEL_NAME", "PATIENT_RISK_MODEL_SESSION3")
+    model_name = os.environ.get("MODEL_NAME", "PATIENT_RISK_MODEL")
     dataset_name = os.environ.get("TRAINING_DATASET_NAME", "PATIENT_TRAINING_DATASET")
     dataset_version = os.environ.get("TRAINING_DATASET_VERSION", None)
     n_estimators = int(os.environ.get("N_ESTIMATORS", "150"))

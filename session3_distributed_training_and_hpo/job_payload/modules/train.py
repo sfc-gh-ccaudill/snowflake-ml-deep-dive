@@ -68,7 +68,8 @@ class Trainer:
         comment = comment or f"Trained via ML Jobs — {datetime.now().isoformat()}"
 
         if dataset is not None:
-            sample_input_data = dataset.read.to_snowpark_dataframe().limit(10)
+            from modules.preprocess import FEATURE_COLS
+            sample_input_data = dataset.read.to_snowpark_dataframe().select(FEATURE_COLS).limit(10)
             metrics["training_dataset_name"] = dataset.fully_qualified_name
             metrics["training_dataset_version"] = dataset.selected_version.name
         else:
