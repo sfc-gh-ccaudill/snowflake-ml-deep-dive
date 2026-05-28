@@ -7,9 +7,9 @@ custom container for training when you need full control over the
 runtime environment.
 """
 
-from datetime import datetime
 import logging
 import os
+from datetime import datetime
 
 from modules.data_loader import DataLoader
 from modules.preprocess import Preprocessor
@@ -40,7 +40,8 @@ def main():
 
     loader = DataLoader(session, database, schema)
     train_df, test_df = loader.load_train_test(
-        train_table_name="TRAINING_FEATURES",
+        train_dataset_name="PATIENT_TRAINING_DATASET",
+        train_dataset_version=os.environ.get("TRAINING_DATASET_VERSION"),
     )
 
     preprocessor = Preprocessor()

@@ -95,6 +95,7 @@ class HPORunner:
         self.experiment_name = experiment_name or os.environ.get(
             "EXPERIMENT_NAME", "PATIENT_RISK_HPO"
         )
+        self.dataset_name = os.environ.get("TRAINING_DATASET_NAME", "PATIENT_TRAINING_DATASET")
         self.metric = metric or os.environ.get("TUNER_METRIC", "f1_macro")
         self.mode = mode or os.environ.get("TUNER_MODE", "max")
         self.search_alg_name = search_alg or os.environ.get("TUNER_SEARCH_ALG", "RandomSearch")
@@ -104,6 +105,7 @@ class HPORunner:
         self.session.use_schema(self.schema)
 
         self.results = None
+        self.dataset_version = None
 
     def build_search_space(self):
         from snowflake.ml.modeling.tune import loguniform, randint, uniform
@@ -117,7 +119,8 @@ class HPORunner:
         }
 
     def _resolve_search_alg(self):
-        from snowflake.ml.modeling.tune.search import BayesOpt, GridSearch, RandomSearch
+        from snowflake.ml.modeling.tune.search import (BayesOpt, GridSearch,
+                                                       RandomSearch)
 
         alg_map = {
             "RandomSearch": RandomSearch,
@@ -145,7 +148,16 @@ class HPORunner:
             num_trials=self.num_trials,
         )
 
-        train_connector = DataConnector.from_dataframe(self.session.table("TRAINING_FEATURES"))
+        self.dataset_version = os.environ.get("TRAINING_DATASET_VERSION")
+
+        from snowflake.ml.dataset import load_dataset
+
+        train_ds = load_dataset(
+            self.session,
+            f"{self.database}.{self.schema}.{self.dataset_name}",
+            version=self.dataset_version,
+        )
+        train_connector = DataConnector.from_dataframe(train_ds.read.to_snowpark_dataframe())
         test_connector = DataConnector.from_dataframe(self.session.table("TEST_FEATURES"))
 
         logger.info("Starting Tuner ...")

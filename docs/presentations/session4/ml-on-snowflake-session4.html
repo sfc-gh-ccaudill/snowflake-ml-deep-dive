@@ -119,12 +119,62 @@
         .pdf-btn { position: fixed; top: 20px; right: 20px; z-index: 999; padding: 8px 16px; border-radius: 8px; background: rgba(41,181,232,0.15); border: 1px solid rgba(41,181,232,0.3); color: var(--sf-blue); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; opacity: 0.6; }
         .pdf-btn:hover { opacity: 1; background: rgba(41,181,232,0.25); }
 
+        .side-nav {
+            position: fixed; left: 0; top: 0; bottom: 0; width: 52px;
+            background: rgba(9,30,51,0.95); border-right: 1px solid rgba(255,255,255,0.06);
+            z-index: 1000; display: flex; flex-direction: column; align-items: center;
+            padding: 12px 0; gap: 2px; overflow-y: auto;
+            transition: width 0.3s ease;
+        }
+        .side-nav:hover { width: 220px; }
+        .side-nav:hover .nav-label { opacity: 1; width: auto; }
+
+        .nav-item {
+            width: 100%; display: flex; align-items: center; gap: 10px;
+            padding: 7px 14px; cursor: pointer; border-radius: 0;
+            transition: background 0.2s ease; white-space: nowrap; overflow: hidden;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.05); }
+        .nav-item.active { background: rgba(41,181,232,0.1); }
+        .nav-item.active .nav-dot { box-shadow: 0 0 6px rgba(41,181,232,0.4); }
+
+        .nav-dot {
+            width: 8px; height: 8px; min-width: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.15); transition: all 0.2s ease;
+        }
+        .nav-dot.green { background: rgba(16,185,129,0.4); }
+        .nav-dot.blue { background: rgba(41,181,232,0.4); }
+        .nav-dot.purple { background: rgba(139,92,246,0.4); }
+        .nav-dot.orange { background: rgba(245,158,11,0.4); }
+        .nav-dot.pink { background: rgba(236,72,153,0.4); }
+        .nav-dot.section { width: 10px; height: 10px; min-width: 10px; }
+
+        .nav-item.active .nav-dot.green { background: var(--sf-green); box-shadow: 0 0 6px rgba(16,185,129,0.5); }
+        .nav-item.active .nav-dot.blue { background: var(--sf-blue); box-shadow: 0 0 6px rgba(41,181,232,0.5); }
+        .nav-item.active .nav-dot.purple { background: var(--sf-purple); box-shadow: 0 0 6px rgba(139,92,246,0.5); }
+        .nav-item.active .nav-dot.orange { background: var(--sf-orange); box-shadow: 0 0 6px rgba(245,158,11,0.5); }
+        .nav-item.active .nav-dot.pink { background: var(--sf-pink); box-shadow: 0 0 6px rgba(236,72,153,0.5); }
+
+        .nav-label {
+            font-size: 0.68em; font-weight: 600; color: rgba(255,255,255,0.5);
+            opacity: 0; width: 0; transition: opacity 0.3s ease;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .nav-item.active .nav-label { color: white; }
+
+        .nav-separator {
+            width: 24px; height: 1px; background: rgba(255,255,255,0.08);
+            margin: 4px 0;
+        }
+
+        .deck { margin-left: 52px; }
+
         @page { size: landscape; margin: 0; }
         @media print {
             body { overflow: visible !important; background: var(--sf-navy) !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .deck { height: auto !important; }
+            .deck { height: auto !important; margin-left: 0; }
             .slide { position: relative !important; inset: auto !important; opacity: 1 !important; pointer-events: all !important; transform: none !important; page-break-after: always; page-break-inside: avoid; width: 100vw; height: 100vh; overflow: hidden !important; }
-            .progress, .slide-num, .nav-hint, .pdf-btn { display: none !important; }
+            .progress, .slide-num, .nav-hint, .pdf-btn, .side-nav { display: none !important; }
         }
     </style>
 </head>
@@ -135,6 +185,35 @@
     <div class="slide-num" id="slideNum"></div>
     <div class="nav-hint">&larr; &rarr; to navigate</div>
     <button class="pdf-btn" onclick="window.print()">&#128196; Save as PDF</button>
+
+    <nav class="side-nav" id="sideNav">
+        <div class="nav-item" data-slide="0"><span class="nav-dot green section"></span><span class="nav-label">Hero</span></div>
+        <div class="nav-item" data-slide="1"><span class="nav-dot blue"></span><span class="nav-label">About Me</span></div>
+        <div class="nav-item" data-slide="2"><span class="nav-dot blue"></span><span class="nav-label">Series</span></div>
+        <div class="nav-item" data-slide="3"><span class="nav-dot blue"></span><span class="nav-label">Agenda</span></div>
+        <div class="nav-separator"></div>
+        <div class="nav-item" data-slide="4"><span class="nav-dot blue section"></span><span class="nav-label">&sect; Inference</span></div>
+        <div class="nav-item" data-slide="5"><span class="nav-dot blue"></span><span class="nav-label">What is Inference</span></div>
+        <div class="nav-item" data-slide="6"><span class="nav-dot blue"></span><span class="nav-label">Two Paths</span></div>
+        <div class="nav-item" data-slide="7"><span class="nav-dot blue"></span><span class="nav-label">Code Examples</span></div>
+        <div class="nav-separator"></div>
+        <div class="nav-item" data-slide="8"><span class="nav-dot green section"></span><span class="nav-label">&sect; Deployment</span></div>
+        <div class="nav-item" data-slide="9"><span class="nav-dot green"></span><span class="nav-label">Architecture</span></div>
+        <div class="nav-item" data-slide="10"><span class="nav-dot green"></span><span class="nav-label">Scalability</span></div>
+        <div class="nav-item" data-slide="11"><span class="nav-dot green"></span><span class="nav-label">create_service()</span></div>
+        <div class="nav-separator"></div>
+        <div class="nav-item" data-slide="12"><span class="nav-dot purple section"></span><span class="nav-label">&sect; MLOps</span></div>
+        <div class="nav-item" data-slide="13"><span class="nav-dot purple"></span><span class="nav-label">Aliases</span></div>
+        <div class="nav-item" data-slide="14"><span class="nav-dot orange"></span><span class="nav-label">Gateway Promotion</span></div>
+        <div class="nav-item" data-slide="15"><span class="nav-dot purple"></span><span class="nav-label">Drift Detection</span></div>
+        <div class="nav-item" data-slide="16"><span class="nav-dot purple"></span><span class="nav-label">Monitor Arch</span></div>
+        <div class="nav-item" data-slide="17"><span class="nav-dot purple"></span><span class="nav-label">Retraining</span></div>
+        <div class="nav-separator"></div>
+        <div class="nav-item" data-slide="18"><span class="nav-dot green"></span><span class="nav-label">Demo Transition</span></div>
+        <div class="nav-item" data-slide="19"><span class="nav-dot blue"></span><span class="nav-label">Recap</span></div>
+        <div class="nav-item" data-slide="20"><span class="nav-dot green"></span><span class="nav-label">Series Complete</span></div>
+        <div class="nav-item" data-slide="21"><span class="nav-dot blue"></span><span class="nav-label">Q&A</span></div>
+    </nav>
 
     <div class="deck">
 
@@ -259,23 +338,23 @@
                 <p class="subtitle">From model registry to production endpoints with full observability.</p>
                 <div class="cards c3" style="margin-top:20px;">
                     <div class="card">
-                        <div class="card-icon green">&#127760;</div>
-                        <h3>Part 1 &mdash; Deployment</h3>
-                        <ul>
-                            <li>Model Service on SPCS</li>
-                            <li>Snowflake Gateway</li>
-                            <li>Auto-Capture &amp; Logging</li>
-                            <li>Version-pinned services</li>
-                        </ul>
-                    </div>
-                    <div class="card">
                         <div class="card-icon blue">&#9889;</div>
-                        <h3>Part 2 &mdash; Inference</h3>
+                        <h3>Part 1 &mdash; Inference</h3>
                         <ul>
                             <li>REST API (real-time)</li>
                             <li>SQL Inference (batch)</li>
                             <li>Model aliases &amp; promotion</li>
                             <li>Traffic splitting</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon green">&#127760;</div>
+                        <h3>Part 2 &mdash; Deployment</h3>
+                        <ul>
+                            <li>Model Service on SPCS</li>
+                            <li>Snowflake Gateway</li>
+                            <li>Auto-Capture &amp; Logging</li>
+                            <li>Version-pinned services</li>
                         </ul>
                     </div>
                     <div class="card">
@@ -292,10 +371,255 @@
             </div>
         </div>
 
-        <!-- ==================== SLIDE 5: SECTION — DEPLOYMENT ==================== -->
+        <!-- ==================== SLIDE 5: SECTION — INFERENCE ==================== -->
         <div class="slide slide-section">
             <div style="position:relative;">
-                <h2>Part 1<br><span style="color:var(--sf-green);">Model Deployment</span></h2>
+                <h2>Part 1<br><span style="color:var(--sf-blue);">Inference</span></h2>
+                <p class="section-sub">Two paths to predictions: SQL in the warehouse, REST in the compute pool.</p>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 5b: WHAT IS INFERENCE ==================== -->
+        <div class="slide slide-dark">
+            <div class="slide-inner">
+                <span class="tag">&#9889; Concept</span>
+                <h2>What is <span class="accent">Inference</span>?</h2>
+                <p class="subtitle">Passing new data through a trained model to get a prediction. The model applies learned patterns to produce actionable output.</p>
+
+                <svg width="100%" viewBox="0 0 960 250" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-top:8px;">
+                    <defs>
+                        <marker id="arrowInf" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0 0L10 3.5L0 7" fill="none" stroke="rgba(41,181,232,0.8)" stroke-width="1.5" /></marker>
+                        <marker id="arrowOut" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto"><path d="M0 0L10 3.5L0 7" fill="none" stroke="rgba(16,185,129,0.8)" stroke-width="1.5" /></marker>
+                    </defs>
+
+                    <!-- EHR RECORD BOX -->
+                    <rect x="10" y="5" width="260" height="195" rx="12" fill="rgba(41,181,232,0.03)" stroke="rgba(41,181,232,0.25)" stroke-width="1.5" />
+                    <rect x="10" y="5" width="260" height="28" rx="12" fill="rgba(41,181,232,0.08)" />
+                    <rect x="10" y="21" width="260" height="12" fill="rgba(41,181,232,0.08)" />
+                    <text x="140" y="19" fill="#56C4EC" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" letter-spacing="1">PATIENT RECORD</text>
+                    <text x="140" y="30" fill="rgba(255,255,255,0.5)" font-size="6" text-anchor="middle" font-family="JetBrains Mono" font-weight="600">PAT-20461 &bull; Smith, R.</text>
+
+                    <!-- Vitals -->
+                    <text x="22" y="47" fill="rgba(255,255,255,0.35)" font-size="5" font-family="Plus Jakarta Sans" font-weight="700" letter-spacing="1">VITALS</text>
+                    <line x1="22" y1="51" x2="258" y2="51" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" />
+                    <rect x="22" y="55" width="60" height="18" rx="9" fill="rgba(41,181,232,0.1)" stroke="rgba(41,181,232,0.3)" stroke-width="0.8" />
+                    <text x="52" y="67" fill="#56C4EC" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">AGE: 72</text>
+                    <rect x="86" y="55" width="70" height="18" rx="9" fill="rgba(139,92,246,0.1)" stroke="rgba(139,92,246,0.3)" stroke-width="0.8" />
+                    <text x="121" y="67" fill="#A78BFA" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">BMI: 31.2</text>
+                    <rect x="160" y="55" width="56" height="18" rx="9" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.3)" stroke-width="0.8" />
+                    <text x="188" y="67" fill="#34D399" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">SPO2: 94</text>
+                    <rect x="220" y="55" width="46" height="18" rx="9" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="0.8" />
+                    <text x="243" y="67" fill="#A78BFA" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">99.2°F</text>
+
+                    <rect x="22" y="77" width="84" height="18" rx="9" fill="rgba(236,72,153,0.1)" stroke="rgba(236,72,153,0.3)" stroke-width="0.8" />
+                    <text x="64" y="89" fill="#F472B6" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">HEART_RATE: 95</text>
+                    <rect x="110" y="77" width="68" height="18" rx="9" fill="rgba(245,158,11,0.1)" stroke="rgba(245,158,11,0.3)" stroke-width="0.8" />
+                    <text x="144" y="89" fill="#FBBF24" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">BP: 158/92</text>
+
+                    <!-- Labs -->
+                    <text x="22" y="108" fill="rgba(255,255,255,0.35)" font-size="5" font-family="Plus Jakarta Sans" font-weight="700" letter-spacing="1">LABS</text>
+                    <line x1="22" y1="112" x2="258" y2="112" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" />
+                    <rect x="22" y="116" width="78" height="18" rx="9" fill="rgba(41,181,232,0.08)" stroke="rgba(41,181,232,0.2)" stroke-width="0.8" />
+                    <text x="61" y="128" fill="#56C4EC" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">GLUCOSE: 142</text>
+                    <rect x="104" y="116" width="64" height="18" rx="9" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="0.8" />
+                    <text x="136" y="128" fill="#34D399" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">CHOL: 245</text>
+                    <rect x="172" y="116" width="60" height="18" rx="9" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.2)" stroke-width="0.8" />
+                    <text x="202" y="128" fill="#FBBF24" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">CREAT: 1.4</text>
+
+                    <!-- Meds -->
+                    <text x="22" y="149" fill="rgba(255,255,255,0.35)" font-size="5" font-family="Plus Jakarta Sans" font-weight="700" letter-spacing="1">MEDICATIONS</text>
+                    <line x1="22" y1="153" x2="258" y2="153" stroke="rgba(255,255,255,0.06)" stroke-width="0.7" />
+                    <rect x="22" y="157" width="80" height="18" rx="9" fill="rgba(236,72,153,0.08)" stroke="rgba(236,72,153,0.2)" stroke-width="0.8" />
+                    <text x="62" y="169" fill="#F472B6" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">MEDS_COUNT: 5</text>
+                    <rect x="106" y="157" width="72" height="18" rx="9" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.18)" stroke-width="0.8" />
+                    <text x="142" y="169" fill="#A78BFA" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">ALLERGIES: 2</text>
+
+                    <!-- Arrow: EHR -> Model -->
+                    <path d="M280 100 L360 100" stroke="rgba(41,181,232,0.7)" stroke-width="2.5" marker-end="url(#arrowInf)" />
+                    <text x="320" y="92" fill="rgba(41,181,232,0.6)" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">features in</text>
+
+                    <!-- MODEL BOX -->
+                    <rect x="375" y="28" width="185" height="145" rx="14" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.4)" stroke-width="2" />
+                    <rect x="415" y="16" width="105" height="24" rx="12" fill="#091E33" stroke="rgba(139,92,246,0.6)" stroke-width="1.5" />
+                    <text x="467" y="32" fill="#A78BFA" font-size="8.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800">ML MODEL</text>
+                    <text x="467" y="60" fill="rgba(255,255,255,0.5)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">PATIENT_RISK_MODEL</text>
+                    <text x="467" y="74" fill="rgba(255,255,255,0.3)" font-size="6" text-anchor="middle" font-family="JetBrains Mono">XGBoost Classifier</text>
+                    <circle cx="435" cy="100" r="4.5" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.4)" stroke-width="0.8" />
+                    <circle cx="455" cy="93" r="4.5" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.4)" stroke-width="0.8" />
+                    <circle cx="480" cy="93" r="4.5" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.4)" stroke-width="0.8" />
+                    <circle cx="500" cy="100" r="4.5" fill="rgba(139,92,246,0.2)" stroke="rgba(139,92,246,0.4)" stroke-width="0.8" />
+                    <circle cx="467" cy="118" r="5.5" fill="rgba(139,92,246,0.3)" stroke="rgba(139,92,246,0.5)" stroke-width="1" />
+                    <path d="M435 100 L467 118 M455 93 L467 118 M480 93 L467 118 M500 100 L467 118" stroke="rgba(139,92,246,0.3)" stroke-width="0.8" />
+                    <text x="467" y="150" fill="rgba(255,255,255,0.25)" font-size="5.5" text-anchor="middle" font-family="Plus Jakarta Sans">Trained on historical outcomes</text>
+
+                    <!-- Arrow: Model -> Output -->
+                    <path d="M565 100 L645 100" stroke="rgba(16,185,129,0.7)" stroke-width="2.5" marker-end="url(#arrowOut)" />
+                    <text x="605" y="92" fill="rgba(16,185,129,0.6)" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">prediction out</text>
+
+                    <!-- OUTPUT -->
+                    <text x="780" y="16" fill="rgba(255,255,255,0.6)" font-size="10" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800">Prediction</text>
+                    <text x="780" y="30" fill="rgba(255,255,255,0.3)" font-size="6.5" text-anchor="middle" font-family="Plus Jakarta Sans">Actionable output</text>
+                    <rect x="695" y="40" width="170" height="48" rx="24" fill="rgba(239,68,68,0.12)" stroke="rgba(239,68,68,0.5)" stroke-width="2" />
+                    <text x="780" y="60" fill="#FCA5A5" font-size="8.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">RISK_LEVEL</text>
+                    <text x="780" y="78" fill="#EF4444" font-size="13" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="900">HIGH</text>
+                    <rect x="710" y="97" width="140" height="26" rx="13" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.3)" stroke-width="1.2" />
+                    <text x="780" y="114" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">Confidence: 0.89</text>
+                    <rect x="710" y="130" width="140" height="26" rx="13" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.3)" stroke-width="1.2" />
+                    <text x="780" y="147" fill="#FBBF24" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="700">Action: Escalate</text>
+
+                    <!-- Bottom annotation -->
+                    <rect x="240" y="205" width="420" height="30" rx="8" fill="rgba(41,181,232,0.04)" stroke="rgba(41,181,232,0.12)" stroke-width="1" />
+                    <text x="450" y="219" fill="rgba(255,255,255,0.5)" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600"><tspan fill="#56C4EC">Inference</tspan> = applying a trained model to new data to generate predictions</text>
+                    <text x="450" y="231" fill="rgba(255,255,255,0.3)" font-size="6" text-anchor="middle" font-family="Plus Jakarta Sans">The model never sees the answer &mdash; it produces one based on learned patterns.</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 10: INFERENCE ARCHITECTURE ==================== -->
+        <div class="slide slide-dark">
+            <div class="slide-inner">
+                <span class="tag">&#9889; Inference</span>
+                <h2>Two Inference <span class="accent">Paths</span></h2>
+                <p class="subtitle">SQL inference runs on your virtual warehouse. Real-time inference runs on the SPCS compute pool. Same model, different compute.</p>
+
+                <svg width="100%" viewBox="0 0 920 300" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-top:4px;">
+                    <defs>
+                        <marker id="arrowI" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0 0L8 3L0 6" fill="none" stroke="rgba(41,181,232,0.7)" stroke-width="1.2" /></marker>
+                        <marker id="arrowI2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0 0L8 3L0 6" fill="none" stroke="rgba(16,185,129,0.7)" stroke-width="1.2" /></marker>
+                    </defs>
+
+                    <!-- Central Model Registry -->
+                    <rect x="370" y="10" width="180" height="55" rx="12" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.35)" stroke-width="1.8" />
+                    <text x="460" y="33" fill="#A78BFA" font-size="10" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800">Model Registry</text>
+                    <text x="460" y="52" fill="rgba(255,255,255,0.4)" font-size="7.5" text-anchor="middle" font-family="JetBrains Mono">PATIENT_RISK_MODEL (V1)</text>
+
+                    <!-- Left: SQL Path -->
+                    <path d="M415 68 L230 100" stroke="rgba(139,92,246,0.4)" stroke-width="2" marker-end="url(#arrowI)" />
+                    <text x="310" y="78" fill="rgba(139,92,246,0.6)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">SQL reference</text>
+
+                    <!-- Right: Service Path -->
+                    <path d="M505 68 L690 100" stroke="rgba(139,92,246,0.4)" stroke-width="2" marker-end="url(#arrowI2)" />
+                    <text x="605" y="78" fill="rgba(139,92,246,0.6)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">create_service()</text>
+
+                    <!-- LEFT: SQL / Warehouse -->
+                    <rect x="30" y="100" width="400" height="190" rx="16" fill="rgba(139,92,246,0.04)" stroke="rgba(139,92,246,0.3)" stroke-width="2" />
+                    <rect x="150" y="88" width="160" height="26" rx="13" fill="#091E33" stroke="rgba(139,92,246,0.5)" stroke-width="1.5" />
+                    <text x="230" y="105" fill="#A78BFA" font-size="9.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" letter-spacing="0.5">VIRTUAL WAREHOUSE</text>
+
+                    <!-- SQL query visual -->
+                    <rect x="55" y="125" width="350" height="60" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
+                    <text x="75" y="145" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono"><tspan fill="#C792EA">SELECT</tspan> patient_id,</text>
+                    <text x="75" y="161" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">       <tspan fill="#FFCB6B">PATIENT_RISK_MODEL</tspan>!<tspan fill="#82AAFF">PREDICT</tspan>(...)</text>
+                    <text x="75" y="177" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono"><tspan fill="#C792EA">FROM</tspan> RAW_PATIENT_DATA;</text>
+
+                    <!-- Characteristics -->
+                    <rect x="55" y="200" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
+                    <text x="135" y="218" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128202; Batch: 1000s of rows</text>
+                    <rect x="225" y="200" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
+                    <text x="305" y="218" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#9201; Latency: seconds</text>
+                    <rect x="55" y="236" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
+                    <text x="135" y="254" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128274; No service needed</text>
+                    <rect x="225" y="236" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
+                    <text x="305" y="254" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128176; Pay per query</text>
+
+                    <text x="230" y="282" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans">Ideal for: pipelines, dbt models, scheduled scoring, Dynamic Tables</text>
+
+                    <!-- RIGHT: REST / Compute Pool -->
+                    <rect x="490" y="100" width="400" height="190" rx="16" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.3)" stroke-width="2" />
+                    <rect x="605" y="88" width="160" height="26" rx="13" fill="#091E33" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" />
+                    <text x="685" y="105" fill="#34D399" font-size="9.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" letter-spacing="0.5">SPCS COMPUTE POOL</text>
+
+                    <!-- REST call visual -->
+                    <rect x="515" y="125" width="350" height="60" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+                    <text x="535" y="145" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">response = requests.<tspan fill="#82AAFF">post</tspan>(</text>
+                    <text x="535" y="161" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">  <tspan fill="#C3E88D">"https://&lt;endpoint&gt;/predict"</tspan>,</text>
+                    <text x="535" y="177" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">  json={<tspan fill="#C3E88D">"dataframe_split"</tspan>: payload})</text>
+
+                    <!-- Characteristics -->
+                    <rect x="515" y="200" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+                    <text x="595" y="218" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#127760; Real-time: 1+ rows</text>
+                    <rect x="685" y="200" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+                    <text x="765" y="218" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#9889; Latency: ~50-200ms</text>
+                    <rect x="515" y="236" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+                    <text x="595" y="254" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128200; Auto-scales</text>
+                    <rect x="685" y="236" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
+                    <text x="765" y="254" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128187; HTTP / REST API</text>
+
+                    <text x="690" y="282" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans">Ideal for: web apps, microservices, real-time scoring, mobile backends</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 11: INFERENCE CODE (SIDE BY SIDE) ==================== -->
+        <div class="slide slide-dark">
+            <div class="slide-inner">
+                <span class="tag">&#128187; Code</span>
+                <h2>Inference <span class="accent">Code Examples</span></h2>
+                <p class="subtitle" style="margin-bottom:8px;">Call the same model two ways: HTTP for real-time apps (left), SQL for batch pipelines (right).</p>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;">
+                    <!-- REST API -->
+                    <div>
+                        <div style="font-size:0.78em;color:#34D399;font-weight:600;margin-bottom:6px;">&#127760; External apps call the REST endpoint via the Gateway</div>
+                        <div style="padding:18px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(16,185,129,0.2);font-family:'JetBrains Mono','Fira Code',monospace;overflow-y:auto;">
+                        <div style="font-size:0.62em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--sf-green);margin-bottom:10px;">REST API (Compute Pool)</div>
+                        <pre style="font-size:0.66em;line-height:1.6;color:rgba(255,255,255,0.85);white-space:pre-wrap;margin:0;"><span style="color:#C792EA;">import</span> json, requests, pandas <span style="color:#C792EA;">as</span> pd
+
+df = pd.DataFrame({
+    <span style="color:#C3E88D;">"AGE"</span>: [<span style="color:#F78C6C;">65</span>], <span style="color:#C3E88D;">"BMI"</span>: [<span style="color:#F78C6C;">28.5</span>],
+    <span style="color:#C3E88D;">"HEART_RATE"</span>: [<span style="color:#F78C6C;">88</span>], ...
+})
+
+payload = {<span style="color:#C3E88D;">"dataframe_split"</span>:
+  json.loads(df.to_json(orient=<span style="color:#C3E88D;">"split"</span>))}
+
+url = <span style="color:#C3E88D;">"https://&lt;gw&gt;.snowflakecomputing.app/predict"</span>
+headers = {
+  <span style="color:#C3E88D;">"Authorization"</span>: f<span style="color:#C3E88D;">'Snowflake Token="{PAT}"'</span>,
+  <span style="color:#C3E88D;">"Content-Type"</span>: <span style="color:#C3E88D;">"application/json"</span>,
+}
+
+response = requests.post(
+    url, json=payload, headers=headers)
+result = response.json()
+<span style="color:rgba(255,255,255,0.35);"># {"data":[[0,{"output_feature_0":"HIGH"}]]}</span></pre>
+                        </div>
+                    </div>
+
+                    <!-- SQL -->
+                    <div>
+                        <div style="font-size:0.78em;color:#A78BFA;font-weight:600;margin-bottom:6px;">&#128202; SQL queries reference the model directly &mdash; no service needed</div>
+                        <div style="padding:18px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(139,92,246,0.2);font-family:'JetBrains Mono','Fira Code',monospace;overflow-y:auto;">
+                        <div style="font-size:0.62em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#A78BFA;margin-bottom:10px;">SQL Inference (Warehouse)</div>
+                        <pre style="font-size:0.66em;line-height:1.6;color:rgba(255,255,255,0.85);white-space:pre-wrap;margin:0;"><span style="color:rgba(255,255,255,0.35);">-- Default version (simplest)</span>
+<span style="color:#C792EA;">SELECT</span> PATIENT_ID,
+  PATIENT_RISK_MODEL!PREDICT(
+    AGE, BMI, HEART_RATE, ...
+  ) <span style="color:#C792EA;">AS</span> prediction
+<span style="color:#C792EA;">FROM</span> RAW_PATIENT_DATA;
+
+<span style="color:rgba(255,255,255,0.35);">-- Specific version via alias</span>
+<span style="color:#C792EA;">WITH</span> v <span style="color:#C792EA;">AS MODEL</span> PATIENT_RISK_MODEL
+         <span style="color:#C792EA;">VERSION</span> production
+<span style="color:#C792EA;">SELECT</span> PATIENT_ID,
+  v!PREDICT(AGE, BMI, ...) <span style="color:#C792EA;">AS</span> prediction
+<span style="color:#C792EA;">FROM</span> RAW_PATIENT_DATA;
+
+<span style="color:rgba(255,255,255,0.35);">-- Batch scoring (CTAS)</span>
+<span style="color:#C792EA;">CREATE TABLE</span> PREDICTIONS <span style="color:#C792EA;">AS</span>
+<span style="color:#C792EA;">SELECT</span> *, PATIENT_RISK_MODEL!PREDICT(...)
+       <span style="color:#C792EA;">AS</span> prediction
+<span style="color:#C792EA;">FROM</span> RAW_PATIENT_DATA;</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== SLIDE 9: SECTION — DEPLOYMENT ==================== -->
+        <div class="slide slide-section">
+            <div style="position:relative;">
+                <h2>Part 2<br><span style="color:var(--sf-green);">Model Deployment</span></h2>
                 <p class="section-sub">From the Model Registry to a managed REST endpoint &mdash; one API call.</p>
             </div>
         </div>
@@ -531,155 +855,6 @@ mv.create_service(
 <span style="color:rgba(255,255,255,0.35);"># Get endpoint URL</span>
 services = mv.list_services()
 endpoint = services[<span style="color:#C3E88D;">'inference_endpoint'</span>].iloc[<span style="color:#F78C6C;">0</span>]</pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ==================== SLIDE 9: SECTION — INFERENCE ==================== -->
-        <div class="slide slide-section">
-            <div style="position:relative;">
-                <h2>Part 2<br><span style="color:var(--sf-blue);">Inference</span></h2>
-                <p class="section-sub">Two paths to predictions: SQL in the warehouse, REST in the compute pool.</p>
-            </div>
-        </div>
-
-        <!-- ==================== SLIDE 10: INFERENCE ARCHITECTURE ==================== -->
-        <div class="slide slide-dark">
-            <div class="slide-inner">
-                <span class="tag">&#9889; Inference</span>
-                <h2>Two Inference <span class="accent">Paths</span></h2>
-                <p class="subtitle">SQL inference runs on your virtual warehouse. Real-time inference runs on the SPCS compute pool. Same model, different compute.</p>
-
-                <svg width="100%" viewBox="0 0 920 300" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin-top:4px;">
-                    <defs>
-                        <marker id="arrowI" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0 0L8 3L0 6" fill="none" stroke="rgba(41,181,232,0.7)" stroke-width="1.2" /></marker>
-                        <marker id="arrowI2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0 0L8 3L0 6" fill="none" stroke="rgba(16,185,129,0.7)" stroke-width="1.2" /></marker>
-                    </defs>
-
-                    <!-- Central Model Registry -->
-                    <rect x="370" y="10" width="180" height="55" rx="12" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.35)" stroke-width="1.8" />
-                    <text x="460" y="33" fill="#A78BFA" font-size="10" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800">Model Registry</text>
-                    <text x="460" y="52" fill="rgba(255,255,255,0.4)" font-size="7.5" text-anchor="middle" font-family="JetBrains Mono">PATIENT_RISK_MODEL (V1)</text>
-
-                    <!-- Left: SQL Path -->
-                    <path d="M415 68 L230 100" stroke="rgba(139,92,246,0.4)" stroke-width="2" marker-end="url(#arrowI)" />
-                    <text x="310" y="78" fill="rgba(139,92,246,0.6)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">SQL reference</text>
-
-                    <!-- Right: Service Path -->
-                    <path d="M505 68 L690 100" stroke="rgba(139,92,246,0.4)" stroke-width="2" marker-end="url(#arrowI2)" />
-                    <text x="605" y="78" fill="rgba(139,92,246,0.6)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">create_service()</text>
-
-                    <!-- LEFT: SQL / Warehouse -->
-                    <rect x="30" y="100" width="400" height="190" rx="16" fill="rgba(139,92,246,0.04)" stroke="rgba(139,92,246,0.3)" stroke-width="2" />
-                    <rect x="150" y="88" width="160" height="26" rx="13" fill="#091E33" stroke="rgba(139,92,246,0.5)" stroke-width="1.5" />
-                    <text x="230" y="105" fill="#A78BFA" font-size="9.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" letter-spacing="0.5">VIRTUAL WAREHOUSE</text>
-
-                    <!-- SQL query visual -->
-                    <rect x="55" y="125" width="350" height="60" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
-                    <text x="75" y="145" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono"><tspan fill="#C792EA">SELECT</tspan> patient_id,</text>
-                    <text x="75" y="161" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">       <tspan fill="#FFCB6B">PATIENT_RISK_MODEL</tspan>!<tspan fill="#82AAFF">PREDICT</tspan>(...)</text>
-                    <text x="75" y="177" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono"><tspan fill="#C792EA">FROM</tspan> RAW_PATIENT_DATA;</text>
-
-                    <!-- Characteristics -->
-                    <rect x="55" y="200" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
-                    <text x="135" y="218" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128202; Batch: 1000s of rows</text>
-                    <rect x="225" y="200" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
-                    <text x="305" y="218" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#9201; Latency: seconds</text>
-                    <rect x="55" y="236" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
-                    <text x="135" y="254" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128274; No service needed</text>
-                    <rect x="225" y="236" width="160" height="28" rx="6" fill="rgba(139,92,246,0.08)" stroke="rgba(139,92,246,0.2)" stroke-width="1" />
-                    <text x="305" y="254" fill="#A78BFA" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128176; Pay per query</text>
-
-                    <text x="230" y="282" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans">Ideal for: pipelines, dbt models, scheduled scoring, Dynamic Tables</text>
-
-                    <!-- RIGHT: REST / Compute Pool -->
-                    <rect x="490" y="100" width="400" height="190" rx="16" fill="rgba(16,185,129,0.04)" stroke="rgba(16,185,129,0.3)" stroke-width="2" />
-                    <rect x="605" y="88" width="160" height="26" rx="13" fill="#091E33" stroke="rgba(16,185,129,0.5)" stroke-width="1.5" />
-                    <text x="685" y="105" fill="#34D399" font-size="9.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" letter-spacing="0.5">SPCS COMPUTE POOL</text>
-
-                    <!-- REST call visual -->
-                    <rect x="515" y="125" width="350" height="60" rx="8" fill="rgba(0,0,0,0.25)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
-                    <text x="535" y="145" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">response = requests.<tspan fill="#82AAFF">post</tspan>(</text>
-                    <text x="535" y="161" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">  <tspan fill="#C3E88D">"https://&lt;endpoint&gt;/predict"</tspan>,</text>
-                    <text x="535" y="177" fill="rgba(255,255,255,0.7)" font-size="8" font-family="JetBrains Mono">  json={<tspan fill="#C3E88D">"dataframe_split"</tspan>: payload})</text>
-
-                    <!-- Characteristics -->
-                    <rect x="515" y="200" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
-                    <text x="595" y="218" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#127760; Real-time: 1+ rows</text>
-                    <rect x="685" y="200" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
-                    <text x="765" y="218" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#9889; Latency: ~50-200ms</text>
-                    <rect x="515" y="236" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
-                    <text x="595" y="254" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128200; Auto-scales</text>
-                    <rect x="685" y="236" width="160" height="28" rx="6" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" stroke-width="1" />
-                    <text x="765" y="254" fill="#34D399" font-size="7.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="600">&#128187; HTTP / REST API</text>
-
-                    <text x="690" y="282" fill="rgba(255,255,255,0.3)" font-size="7" text-anchor="middle" font-family="Plus Jakarta Sans">Ideal for: web apps, microservices, real-time scoring, mobile backends</text>
-                </svg>
-            </div>
-        </div>
-
-        <!-- ==================== SLIDE 11: INFERENCE CODE (SIDE BY SIDE) ==================== -->
-        <div class="slide slide-dark">
-            <div class="slide-inner">
-                <span class="tag">&#128187; Code</span>
-                <h2>Inference <span class="accent">Code Examples</span></h2>
-                <p class="subtitle" style="margin-bottom:8px;">Call the same model two ways: HTTP for real-time apps (left), SQL for batch pipelines (right).</p>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;">
-                    <!-- REST API -->
-                    <div>
-                        <div style="font-size:0.78em;color:#34D399;font-weight:600;margin-bottom:6px;">&#127760; External apps call the REST endpoint via the Gateway</div>
-                        <div style="padding:18px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(16,185,129,0.2);font-family:'JetBrains Mono','Fira Code',monospace;overflow-y:auto;">
-                        <div style="font-size:0.62em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--sf-green);margin-bottom:10px;">REST API (Compute Pool)</div>
-                        <pre style="font-size:0.66em;line-height:1.6;color:rgba(255,255,255,0.85);white-space:pre-wrap;margin:0;"><span style="color:#C792EA;">import</span> json, requests, pandas <span style="color:#C792EA;">as</span> pd
-
-df = pd.DataFrame({
-    <span style="color:#C3E88D;">"AGE"</span>: [<span style="color:#F78C6C;">65</span>], <span style="color:#C3E88D;">"BMI"</span>: [<span style="color:#F78C6C;">28.5</span>],
-    <span style="color:#C3E88D;">"HEART_RATE"</span>: [<span style="color:#F78C6C;">88</span>], ...
-})
-
-payload = {<span style="color:#C3E88D;">"dataframe_split"</span>:
-  json.loads(df.to_json(orient=<span style="color:#C3E88D;">"split"</span>))}
-
-url = <span style="color:#C3E88D;">"https://&lt;gw&gt;.snowflakecomputing.app/predict"</span>
-headers = {
-  <span style="color:#C3E88D;">"Authorization"</span>: f<span style="color:#C3E88D;">'Snowflake Token="{PAT}"'</span>,
-  <span style="color:#C3E88D;">"Content-Type"</span>: <span style="color:#C3E88D;">"application/json"</span>,
-}
-
-response = requests.post(
-    url, json=payload, headers=headers)
-result = response.json()
-<span style="color:rgba(255,255,255,0.35);"># {"data":[[0,{"output_feature_0":"HIGH"}]]}</span></pre>
-                        </div>
-                    </div>
-
-                    <!-- SQL -->
-                    <div>
-                        <div style="font-size:0.78em;color:#A78BFA;font-weight:600;margin-bottom:6px;">&#128202; SQL queries reference the model directly &mdash; no service needed</div>
-                        <div style="padding:18px;border-radius:12px;background:rgba(0,0,0,0.3);border:1px solid rgba(139,92,246,0.2);font-family:'JetBrains Mono','Fira Code',monospace;overflow-y:auto;">
-                        <div style="font-size:0.62em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#A78BFA;margin-bottom:10px;">SQL Inference (Warehouse)</div>
-                        <pre style="font-size:0.66em;line-height:1.6;color:rgba(255,255,255,0.85);white-space:pre-wrap;margin:0;"><span style="color:rgba(255,255,255,0.35);">-- Default version (simplest)</span>
-<span style="color:#C792EA;">SELECT</span> PATIENT_ID,
-  PATIENT_RISK_MODEL!PREDICT(
-    AGE, BMI, HEART_RATE, ...
-  ) <span style="color:#C792EA;">AS</span> prediction
-<span style="color:#C792EA;">FROM</span> RAW_PATIENT_DATA;
-
-<span style="color:rgba(255,255,255,0.35);">-- Specific version via alias</span>
-<span style="color:#C792EA;">WITH</span> v <span style="color:#C792EA;">AS MODEL</span> PATIENT_RISK_MODEL
-         <span style="color:#C792EA;">VERSION</span> production
-<span style="color:#C792EA;">SELECT</span> PATIENT_ID,
-  v!PREDICT(AGE, BMI, ...) <span style="color:#C792EA;">AS</span> prediction
-<span style="color:#C792EA;">FROM</span> RAW_PATIENT_DATA;
-
-<span style="color:rgba(255,255,255,0.35);">-- Batch scoring (CTAS)</span>
-<span style="color:#C792EA;">CREATE TABLE</span> PREDICTIONS <span style="color:#C792EA;">AS</span>
-<span style="color:#C792EA;">SELECT</span> *, PATIENT_RISK_MODEL!PREDICT(...)
-       <span style="color:#C792EA;">AS</span> prediction
-<span style="color:#C792EA;">FROM</span> RAW_PATIENT_DATA;</pre>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1138,6 +1313,13 @@ result = response.json()
             function update() {
                 document.getElementById('slideNum').textContent = (current + 1) + ' / ' + total;
                 document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+                updateNav();
+            }
+
+            function updateNav() {
+                document.querySelectorAll('.nav-item').forEach(item => {
+                    item.classList.toggle('active', parseInt(item.dataset.slide) === current);
+                });
             }
 
             function goTo(idx) {
@@ -1147,6 +1329,13 @@ result = response.json()
                 slides[current].classList.add('active');
                 update();
             }
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    goTo(parseInt(item.dataset.slide));
+                });
+            });
 
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
@@ -1160,7 +1349,7 @@ result = response.json()
             document.addEventListener('touchend', e => { const d = tx - e.changedTouches[0].clientX; if (Math.abs(d) > 50) goTo(current + (d > 0 ? 1 : -1)); });
 
             document.addEventListener('click', e => {
-                if (e.target.closest('a,button,input')) return;
+                if (e.target.closest('a,button,input,.side-nav')) return;
                 const x = e.clientX / window.innerWidth;
                 if (x > 0.85) goTo(current + 1);
                 else if (x < 0.15) goTo(current - 1);

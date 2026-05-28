@@ -2,10 +2,10 @@
 
 Hands-on workshops exploring Snowflake's machine learning capabilities in depth. Each session is a standalone set of notebooks that teaches one area of the ML platform through guided, interactive examples.
 
-**Use case**: Patient Risk Stratification (same domain as the [production pipeline repo](https://github.com/ccaudill/snowflake-ml-pipeline)) — classifying patients as LOW/MEDIUM/HIGH/CRITICAL risk from clinical vitals.
+**Use case**: Patient Risk Stratification (same domain as the [production pipeline repo](https://github.com/sfc-gh-ccaudill/snowflake-ml-pipeline)) — classifying patients as LOW/MEDIUM/HIGH/CRITICAL risk from clinical vitals.
 
 > **Looking for the end-to-end production pipeline?**
-> See [snowflake-ml-pipeline](https://github.com/ccaudill/snowflake-ml-pipeline) — a complete production-grade ML pipeline with Feature Store, distributed training, model serving, drift monitoring, and automated retraining, all orchestrated by Snowflake Tasks. Session 1 of this workshop series provides the overview of that system.
+> See [snowflake-ml-pipeline](https://github.com/sfc-gh-ccaudill/snowflake-ml-pipeline) — a complete production-grade ML pipeline with Feature Store, distributed training, model serving, drift monitoring, and automated retraining, all orchestrated by Snowflake Tasks. Session 1 of this workshop series provides the overview of that system.
 
 ---
 
@@ -13,7 +13,7 @@ Hands-on workshops exploring Snowflake's machine learning capabilities in depth.
 
 | Session | Topic | Notebooks | Presentation |
 |---------|-------|-----------|--------------|
-| **1** | End-to-End ML Pipeline Overview | *(see [snowflake-ml-pipeline](https://github.com/ccaudill/snowflake-ml-pipeline))* | *(in pipeline repo)* |
+| **1** | End-to-End ML Pipeline Overview | *(see [snowflake-ml-pipeline](https://github.com/sfc-gh-ccaudill/snowflake-ml-pipeline))* | *(in pipeline repo)* |
 | **2** | Feature Store & Experiment Tracking | `session2_features_and_experiments/` | `docs/presentations/session2/` |
 | **3** | ML Jobs, Distributed Training & HPO | `session3_distributed_training_and_hpo/` | `docs/presentations/session3/` |
 | **4** | Model Deployment, Inference & MLOps | `session4_deployment_inference_and_mlops/` | `docs/presentations/session4/` |
@@ -54,7 +54,7 @@ Hands-on workshops exploring Snowflake's machine learning capabilities in depth.
 - Snowflake CLI (`snow`) installed and configured
 - Python 3.10+
 - `snowflake-ml-python` package
-- **Data**: The workshops expect `ML_DEMO_PIPELINE_DB.HEALTHCARE.RAW_PATIENT_DATA` and related tables to exist. Run setup (below) or use the [pipeline repo](https://github.com/ccaudill/snowflake-ml-pipeline) to generate data.
+- **Data**: The workshops expect `ML_DEMO_PIPELINE_DB.HEALTHCARE.RAW_PATIENT_DATA` and related tables to exist. Run setup (below) or use the [pipeline repo](https://github.com/sfc-gh-ccaudill/snowflake-ml-pipeline) to generate data.
 
 ---
 
@@ -125,7 +125,7 @@ snowflake-ml-deep-dive/
 
 ## Relationship to snowflake-ml-pipeline
 
-This repo teaches **how individual Snowflake ML features work**. The [snowflake-ml-pipeline](https://github.com/ccaudill/snowflake-ml-pipeline) repo shows **how to compose them into a production system**.
+This repo teaches **how individual Snowflake ML features work**. The [snowflake-ml-pipeline](https://github.com/sfc-gh-ccaudill/snowflake-ml-pipeline) repo shows **how to compose them into a production system**.
 
 | | This Repo (Deep Dive) | Pipeline Repo |
 |---|---|---|

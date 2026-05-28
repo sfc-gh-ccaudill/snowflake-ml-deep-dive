@@ -5,8 +5,8 @@ Provides a consistent train -> evaluate -> register workflow
 so individual scripts only need to define their model and hyperparameters.
 """
 
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import Dict, Optional
 
 import pandas as pd
@@ -58,6 +58,7 @@ class Trainer:
         database: str,
         schema: str,
         sample_input: pd.DataFrame,
+        dataset=None,
         metrics: Optional[Dict] = None,
         version_name: Optional[str] = None,
         comment: Optional[str] = None,
@@ -65,6 +66,13 @@ class Trainer:
         version_name = version_name or f"v_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         metrics = metrics or self.metrics
         comment = comment or f"Trained via ML Jobs — {datetime.now().isoformat()}"
+
+        if dataset is not None:
+            sample_input_data = dataset.read.to_snowpark_dataframe().limit(10)
+            metrics["training_dataset_name"] = dataset.fully_qualified_name
+            metrics["training_dataset_version"] = dataset.selected_version.name
+        else:
+            sample_input_data = sample_input
 
         registry_model = self._build_registry_model()
 
@@ -74,10 +82,10 @@ class Trainer:
             model=registry_model,
             model_name=model_name,
             version_name=version_name,
-            sample_input_data=sample_input,
+            sample_input_data=sample_input_data,
             metrics=metrics,
             task=Task.TABULAR_MULTI_CLASSIFICATION,
-            target_platforms=["SNOWPARK_CONTAINER_SERVICES"],
+            target_platforms=["WAREHOUSE", "SNOWPARK_CONTAINER_SERVICES"],
             comment=comment,
         )
         logger.info("Model registered: %s / %s", model_name, version_name)

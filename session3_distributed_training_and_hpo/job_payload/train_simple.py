@@ -42,7 +42,7 @@ def main():
 
     # == Load Data ==
     loader = DataLoader(session, database, schema)
-    train_df, test_df = loader.load_train_test(
+    train_df, test_df, dataset = loader.load_train_test(
         train_dataset_name=dataset_name,
         train_dataset_version=dataset_version,
     )
@@ -69,6 +69,7 @@ def main():
         database=database,
         schema=schema,
         sample_input=preprocessor.sample_input(train_df),
+        dataset=dataset,
     )
     logger.info("=== Training complete ===")
 

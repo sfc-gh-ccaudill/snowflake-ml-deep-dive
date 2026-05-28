@@ -26,8 +26,11 @@ NUMERIC_COLS = [
     "COMORBIDITY_COUNT",
     "PREVIOUS_ADMISSIONS",
     "MEDICATION_COUNT",
+    "SHOCK_INDEX",
+    "PULSE_PRESSURE",
+    "VITAL_SIGNS_SEVERITY",
 ]
-CATEGORICAL_COLS = ["GENDER", "PRIMARY_DIAGNOSIS", "ADMISSION_TYPE", "INSURANCE_TYPE"]
+CATEGORICAL_COLS = ["GENDER", "PRIMARY_DIAGNOSIS", "ADMISSION_TYPE", "INSURANCE_TYPE", "BMI_CATEGORY"]
 TARGET_COL = "RISK_LEVEL"
 FEATURE_COLS = NUMERIC_COLS + CATEGORICAL_COLS
 
@@ -86,6 +89,8 @@ class Preprocessor:
 
     def sample_input(self, df, n=10):
         sample = df[self.feature_cols].head(n).copy()
+        for col in self.numeric_cols:
+            sample[col] = sample[col].astype(float)
         for col in sample.select_dtypes(include=["object"]).columns:
             sample[col] = sample[col].fillna("Unknown")
         sample = sample.fillna(0)

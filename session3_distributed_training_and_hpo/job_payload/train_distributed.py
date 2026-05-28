@@ -12,7 +12,8 @@ import os
 
 from snowflake.ml.data.data_connector import DataConnector
 from snowflake.ml.model.task import Task
-from snowflake.ml.modeling.distributors.xgboost import XGBEstimator, XGBScalingConfig
+from snowflake.ml.modeling.distributors.xgboost import (XGBEstimator,
+                                                        XGBScalingConfig)
 from snowflake.ml.registry import Registry
 from snowflake.snowpark import Session
 
@@ -24,6 +25,8 @@ def main():
     database = os.environ.get("DATABASE", "ML_DEMO_PIPELINE_DB")
     schema = os.environ.get("SCHEMA", "HEALTHCARE")
     model_name = os.environ.get("MODEL_NAME", "PATIENT_RISK_XGB_DISTRIBUTED")
+    dataset_name = os.environ.get("TRAINING_DATASET_NAME", "PATIENT_TRAINING_DATASET")
+    dataset_version = os.environ.get("TRAINING_DATASET_VERSION", None)
     max_depth = int(os.environ.get("MAX_DEPTH", "8"))
     learning_rate = float(os.environ.get("LEARNING_RATE", "0.1"))
     n_estimators = int(os.environ.get("N_ESTIMATORS", "200"))
@@ -38,7 +41,8 @@ def main():
     session.use_database(database)
     session.use_schema(schema)
 
-    # == Create DataConnectors for Distributed Training ==
+    # == Load Training Data from Pre-generated Dataset ==
+    from snowflake.ml.dataset import load_dataset
     from snowflake.snowpark import functions as F
 
     label_col = "RISK_LEVEL"
@@ -58,8 +62,14 @@ def main():
         "BMI_CATEGORY",
     }
 
-    train_df = session.table("TRAINING_FEATURES").with_column(label_encoded_col, label_expr)
+    train_ds = load_dataset(session, f"{database}.{schema}.{dataset_name}", version=dataset_version)
+    train_df = train_ds.read.to_snowpark_dataframe().with_column(label_encoded_col, label_expr)
+    train_df.write.save_as_table("TRAIN_DISTRIBUTED_TEMP", mode="overwrite", table_type="temporary")
+    train_df = session.table("TRAIN_DISTRIBUTED_TEMP")
+
     test_df = session.table("TEST_FEATURES").with_column(label_encoded_col, label_expr)
+    test_df.write.save_as_table("TEST_DISTRIBUTED_TEMP", mode="overwrite", table_type="temporary")
+    test_df = session.table("TEST_DISTRIBUTED_TEMP")
 
     input_cols = [
         c for c in train_df.columns if c not in exclude_cols and c not in categorical_cols
